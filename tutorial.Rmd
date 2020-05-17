@@ -27,11 +27,16 @@ In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/
 Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#), then we get our dataset by read.csv
 
 ```{r data prep}
+<<<<<<< HEAD
 library(rvest)
 library(tidyverse)
 library(tidyr)
 library(lubridate)
 
+=======
+library(dplyr) 
+library(leaflet)
+>>>>>>> 09cf57faed4950b03daf6b46059b56287f98f5b3
 data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
 head(data,10)
 
@@ -70,9 +75,13 @@ tidy
 ```
 
 
-### exploratory data analysis; 
-```{r data prep1}
+## Exploratory Data Analysis
 
+```{r data_analysis, include=TRUE, eval=TRUE}
+map <- leaflet(data) %>%
+  addTiles() %>%
+  setView(lat=37.773972, lng=-122.431297, zoom=11)
+map
 
 ```
 
