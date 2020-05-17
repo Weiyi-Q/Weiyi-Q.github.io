@@ -27,6 +27,10 @@ In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/
 Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#), then we get our dataset by read.csv
 
 ```{r data prep}
+library(rvest)
+library(tidyverse)
+library(tidyr)
+library(lubridate)
 
 data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
 head(data,10)
@@ -50,6 +54,20 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 | 11 | `Location` | Decimal | Exact Location Name |
 | 12 | `PdId` | other | Pd Id|
 
+Let's tidy the data:
+* First, we ignore the last attribute pd Id because it is not so useful to take analysis
+* Second We deal with the date here, as you could see, the time part in Date attribute is always 12:00:00 Am, so we would like to take it off and attach with the Time attribute and make Date attribute a datatype of datetime
+
+```{r data tidy}
+tidy <- data %>%
+  mutate(Date = str_split(Date, " ")[[1]][1]) %>%
+  mutate(Date = paste(Date, Time, " ")) %>%
+  mutate(Date = mdy_hm(Date)) %>%
+  select(-PdId)
+
+tidy
+
+```
 
 
 ### exploratory data analysis; 
