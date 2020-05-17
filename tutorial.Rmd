@@ -69,7 +69,7 @@ tidy <- data %>%
   mutate(Month = format(Date, "%m")) %>%
   select(-PdId)
 
-head(tidy)
+head(tidy, 10)
 
 ```
 
@@ -107,7 +107,8 @@ we could also use a bar graph to see the crime distribution of all crimes in hou
 tidy %>%
   group_by(hour) %>% 
     summarize(num_incident = n()) %>% 
-  ggplot(mapping = (aes(x = hour, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
+  ggplot(mapping = (aes(x= factor(hour), y = num_incident))) + 
+  geom_bar(stat = "identity")
 
 ```
 
@@ -127,7 +128,9 @@ From the table, there is not much difference between the distribution in each da
 tidy %>%
   group_by(DayOfWeek) %>% 
     summarize(num_incident = n()) %>% 
-  ggplot(mapping = (aes(x = DayOfWeek, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
+  ggplot(mapping = (aes(x = DayOfWeek, y = num_incident))) + 
+  geom_boxplot() + 
+  geom_bar(stat = "identity")
 
 
 ```
@@ -167,12 +170,40 @@ map
 
 ### hypothesis testing and machine learning to provide analysis; 
 
-```{r data prep2}
+```{r reg}
+tidy_new <- tidy %>% 
+  mutate(reso = ifelse(Resolution == "NONE", 0, 1))
 
+tidy_new %>%
+  group_by(DayOfWeek) %>% 
+    summarize(week_num = n()) 
+    
+  
+tidy_new <- inner_join(tidy_new, tidy, by = "DayOfWeek")
+  
+  
+      
 
 ```
 
 
+```{r reg2}
+
+auto_fit <- lm(reso~hour, tidy_new)
+auto_fit_stats <- auto_fit %>%
+  tidy() 
+auto_fit_stats %>% knitr::kable()
+
+```
+
+```{r check}
+auto_fit %>% 
+  augment() %>%
+  ggplot(aes(x=.fitted, y=.resid)) +
+    geom_point()
+
+
+```
 
 
 
