@@ -63,7 +63,7 @@ Let's tidy the data:
 * First, we ignore the last attribute pd Id because it is not so useful to take analysis
 * Second We deal with the date here, as you could see, the time part in Date attribute is always 12:00:00 Am, so we would like to take it off and attach with the Time attribute and make Date attribute a datatype of datetime
 
-```{r data tidy}
+```{r tidy}
 tidy <- data %>%
   mutate(Date = str_split(Date, " ")[[1]][1]) %>%
   mutate(Date = paste(Date, Time, " ")) %>%
