@@ -14,7 +14,7 @@ Monitoring and tracking cirme records of cities seems fairly important, it not o
 
 In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#) on the Kaggle provided by Roshan Sharma to give a tutorial how to do the anaylsis. Generally we are splitting this tutorial into **3** parts:
 
-* Evaluating data basing on single attribute
+* Evaluating data basing on single attributes
 
 * Comparison and analysis of two and more attributes
 
@@ -103,14 +103,55 @@ table(tidy$hour)
 
 we could also use a bar graph to see the crime distribution of all crimes in hours. As you could see from the plot and table above, in year of 2016, the least crimes commited in time period of 05:00 - 05:59 and the most crimes commited in time period of  18:00 - 18:59. Baseing on boxplot, we could see that the peroid of 1:00 - 11:59 AM is the period that crime commited under the average value. Therefore, Police officer can have more security check ands shifts around city  in time period of 12:00 - 00:59.
 
-```{r eval2}
+```{r eval4}
 tidy %>%
   group_by(hour) %>% 
-    summarize(num_incident = n(), mean_num = mean(num_incident)) %>% 
+    summarize(num_incident = n()) %>% 
   ggplot(mapping = (aes(x = hour, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
 
 ```
 
+* Distribution of crimes in a week: let's look at how crimes are distributed within a week in a year of 2016. 
+
+```{r eval7}
+
+sort(table(tidy$DayOfWeek))
+
+
+```
+
+From the table, there is not much difference between the distribution in each day of week, and the top three days that crimes mostly commited are Friday, Saturday and Thrusday. We use bar graph to visualize the data.
+
+```{r eval8}
+
+tidy %>%
+  group_by(DayOfWeek) %>% 
+    summarize(num_incident = n()) %>% 
+  ggplot(mapping = (aes(x = DayOfWeek, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
+
+
+```
+
+
+```{r eval5}
+
+sort(table(tidy$Category))
+
+
+```
+
+By looking at the table of categories, the top three crimes commited in San Franciso are LARCENY/THEFT, OTHER OFFENSES and NON-CRIMINAL. A good way to do visualize is to build up a pie chart, then we could see the proportion and differences among all categories. As you could see the largest proportion LARCENY/THEFT is more than a quarter.
+
+```{r eval6}
+
+tidy %>%
+  group_by(Category) %>%
+  summarize(num_incident = n()) %>% 
+  ggplot(aes(x="", y=num_incident, fill=Category)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)
+
+```
 
 ## Exploratory Data Analysis
 
