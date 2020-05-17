@@ -44,7 +44,7 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 
 | Num | Name | Type | Description |
 |-----|------|------|-------------|
-| 1 | `IncidntNum` | other | Incident Number |
+| 1 | `IncidntNum` | categorical | Incident Number |
 | 2 | `Category` | categorical unordered | Description of Crime  |
 | 3 | `DayOfWeek` | categorical unordered | Day of Week when the crime happened |
 | 4 | `Date` | Datetime | Date |
@@ -52,9 +52,9 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 | 6 | `PdDistrict` | categorical unorded |  District |
 | 7 | `Resolution` | categorical unorded |  Kind of Punishment given to the criminal to resolve the case |
 | 8 | `Address` | Geolocation | Address where the crime scene happened |
-| 9 | `X` | Decimal | Latitude of the crime Location |
-| 10 | `Y` | Decimal | Longitude of the Crime Location |
-| 11 | `Location` | Decimal | Exact Location Name |
+| 9 | `X` | Geolocation | Latitude of the crime Location |
+| 10 | `Y` | Geolocation | Longitude of the Crime Location |
+| 11 | `Location` | Geolocation | Exact Location Name |
 | 12 | `PdId` | other | Pd Id|
 
 Let's tidy the data:
@@ -69,7 +69,7 @@ tidy <- data %>%
   mutate(Month = format(Date, "%m")) %>%
   select(-PdId)
 
-tidy
+head(tidy)
 
 ```
 
