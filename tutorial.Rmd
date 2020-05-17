@@ -52,9 +52,13 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 
 
 
-### exploratory data analysis; 
-```{r data prep1}
+## Exploratory Data Analysis
 
+```{r data_analysis, include=TRUE, eval=TRUE}
+map <- leaflet(data) %>%
+  addTiles() %>%
+  setView(lat=37.773972, lng=-122.431297, zoom=11)
+map
 
 ```
 
