@@ -66,6 +66,7 @@ tidy <- data %>%
   mutate(Date = str_split(Date, " ")[[1]][1]) %>%
   mutate(Date = paste(Date, Time, " ")) %>%
   mutate(Date = mdy_hm(Date)) %>%
+  mutate(year = format(Date, "%Y")) %>%
   select(-PdId)
 
 tidy
