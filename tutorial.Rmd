@@ -25,16 +25,16 @@ In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/
 ### Data Preparation: 
 
 Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#), then we get our dataset by read.csv
-
-```{r data prep}
-
+```{r libraries, eval=TRUE, message=FALSE}
 library(rvest)
 library(tidyverse)
 library(tidyr)
 library(lubridate)
 library(dplyr) 
 library(leaflet)
+```
 
+```{r data prep}
 data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
 head(data,10)
 
@@ -155,11 +155,53 @@ tidy %>%
 
 ## Exploratory Data Analysis
 
-```{r data_analysis, include=TRUE, eval=TRUE}
-map <- leaflet(data) %>%
+A useful visualization is for geographic data is using the interactive map. Each incident has a location coordinates which let us able to see the distribution of crime incidents in San Francisco for our data.
+
+First, we set the map view using the latitudes and longitudes of San Francisco: 
+
+```{r data1, message=FALSE}
+
+map <- leaflet(tidy) %>%
   addTiles() %>%
   setView(lat=37.773972, lng=-122.431297, zoom=11)
 map
+
+```
+
+| Color | Incident Time |
+|-----|------|
+| yellow | 6am - 12 am |
+| navy | 12pm - 6pm |
+| red | 6pm - 12am | 
+| black | 12am - 6am |
+
+```{r data2, include=TRUE, eval=TRUE}
+
+color <- function(tidy){
+  sapply(tidy$hour, function(hour){
+    if (hour >= 6 & hour < 12){
+      "yellow"
+    } else if (hour >=12 & hour < 18){
+      "navy"
+    } else if (hour >=18){
+      "red"
+    } else {
+      "black"
+    }
+  })
+}
+
+leaflet(tidy) %>%
+  addTiles() %>%
+  setView(lat=37.773972, lng=-122.431297, zoom=11) %>%
+  addCircleMarkers(
+    data = tidy,
+    lat = tidy$X,
+    lng = tidy$Y,
+    color = ~color,
+    stroke = FALSE, 
+    fillOpacity = 0.5
+  )
 
 ```
 
