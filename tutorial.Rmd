@@ -1,25 +1,68 @@
+---
+title: "Final Project"
+author: "Katherine Zen, Zhiyue Gao, Weiyi Qin"
+---
+
+# Analysis of crime record of San Fransico
 
 
-##data curation, parsing, and management; 
+### Motivation:
+
+Monitoring and tracking cirme records of cities seems fairly important, it not only implicitly states how crimes are committed but also gives the authorities a better way to analyze the features of crimes across cities and enforce more security to reduce the crimes efficiently. Therefore, we are giving this turorial of how to do the analysis of a San Fransico Crime Data Set in a way of data science that we learned in class of CMSC320.
+
+### Introduction
+
+In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#) on the Kaggle provided by Roshan Sharma to give a tutorial how to do the anaylsis. Generally we are splitting this tutorial into **3** parts:
+
+* Evaluating data basing on single attribute
+
+* Comparison and analysis of two and more attributes
+
+* Regression of crime dataset
+
+
+
+### Data Preparation: 
+
+Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#), then we get our dataset by read.csv
+
 ```{r data prep}
 
 data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
-data
+head(data,10)
+
+```
+
+There are 12 attributes, their data types and attributes' descriptions from the Kaggle websites.
+
+| Num | Name | Type | Description |
+|-----|------|------|-------------|
+| 1 | `IncidntNum` | other | Incident Number |
+| 2 | `Category` | categorical unordered | Description of Crime  |
+| 3 | `DayOfWeek` | categorical unordered | Day of Week when the crime happened |
+| 4 | `Date` | Datetime | Date |
+| 5 | `Time` | Datetime | Time|
+| 6 | `PdDistrict` | categorical unorded |  District |
+| 7 | `Resolution` | categorical unorded |  Kind of Punishment given to the criminal to resolve the case |
+| 8 | `Address` | Geolocation | Address where the crime scene happened |
+| 9 | `X` | Decimal | Latitude of the crime Location |
+| 10 | `Y` | Decimal | Longitude of the Crime Location |
+| 11 | `Location` | Decimal | Exact Location Name |
+| 12 | `PdId` | other | Pd Id|
+
+
+
+### exploratory data analysis; 
+```{r data prep1}
+
 
 ```
 
 
-##exploratory data analysis; 
-```{r data prep}
 
+### hypothesis testing and machine learning to provide analysis; 
 
-```
-
-
-
-##hypothesis testing and machine learning to provide analysis; 
-
-```{r data prep}
+```{r data prep2}
 
 
 ```
@@ -29,8 +72,8 @@ data
 
 
 
-##and then the curation of a message or messages covering insights learned during the tutorial.
-```{r data prep}
+### and then the curation of a message or messages covering insights learned during the tutorial.
+```{r data prep3}
 
 
 ```
