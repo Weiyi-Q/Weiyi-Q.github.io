@@ -63,13 +63,51 @@ Let's tidy the data:
 
 ```{r tidy}
 tidy <- data %>%
-  mutate(Date = str_split(Date, " ")[[1]][1]) %>%
-  mutate(Date = paste(Date, Time, " ")) %>%
-  mutate(Date = mdy_hm(Date)) %>%
-  mutate(year = format(Date, "%Y")) %>%
+  mutate(Time = hm(Time))%>%
+  mutate(hour = hour(Time)) %>%
+  mutate(Date = mdy_hms(Date)) %>%
+  mutate(Month = format(Date, "%m")) %>%
   select(-PdId)
 
 tidy
+
+```
+
+#### evaluation on single attributes
+
+* First, let's look at the distribution of the number of crimes in year of 2016, the difference among all months are not pretty big
+
+```{r eval1}
+
+table(tidy$Month)
+
+```
+
+we use bar graph to give a visualization of the connection of how number of crimes differes from months. By the graph below, we could see much height difference among each bars, but Feburary and October look
+
+```{r eval2}
+
+tidy %>%
+  group_by(Month)%>%
+  summarize(num_incident = n()) %>%
+  ggplot(mapping = aes(x = Month, y = num_incident)) + geom_bar(stat = "identity")
+
+```
+
+* Second, let's look the crime distribution in time(by hours): 
+
+```{r eval3}
+table(tidy$hour)
+
+```
+
+we could also use a bar graph to see the crime distribution of all crimes in hours. As you could see from the plot and table above, in year of 2016, the least crimes commited in time period of 05:00 - 05:59 and the most crimes commited in time period of  18:00 - 18:59. Baseing on boxplot, we could see that the peroid of 1:00 - 11:59 AM is the period that crime commited under the average value. Therefore, Police officer can have more security check ands shifts around city  in time period of 12:00 - 00:59.
+
+```{r eval2}
+tidy %>%
+  group_by(hour) %>% 
+    summarize(num_incident = n(), mean_num = mean(num_incident)) %>% 
+  ggplot(mapping = (aes(x = hour, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
 
 ```
 
