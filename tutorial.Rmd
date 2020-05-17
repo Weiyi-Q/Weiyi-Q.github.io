@@ -27,7 +27,8 @@ In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/
 Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#), then we get our dataset by read.csv
 
 ```{r data prep}
-
+library(dplyr) 
+library(leaflet)
 data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
 head(data,10)
 
