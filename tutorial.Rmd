@@ -8,11 +8,11 @@ author: "Katherine Zen, Zhiyue Gao, Weiyi Qin"
 
 ### Motivation
 
-Monitoring and tracking cirme records of cities seems fairly important, it not only implicitly states how crimes are committed but also gives the authorities a better way to analyze the features of crimes across cities and enforce more security to reduce the crimes efficiently. Therefore, we are giving this turorial of how to do the analysis of a San Fransico Crime Data Set in a way of data science that we learned in class of CMSC320.
+Monitoring and tracking cirme records of cities seem fairly important, it not only implicitly states how crimes are committed but also gives the authorities a better way to analyze the features of crimes across cities and enforce more securities to reduce crimes efficiently. Therefore, we are giving this tutorial of how to do the analysis of a San Fransico Crime DataSet in a way of data science that we learned in class of CMSC320.
 
 ### Introduction
 
-In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#) on the Kaggle provided by Roshan Sharma to give a tutorial how to do the anaylsis. Generally we are splitting this tutorial into **3** parts:
+In this project, we base on the [dataset](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#) on the Kaggle provided by Roshan Sharma to give a tutorial on how to do the anaylsis. Generally we are splitting this tutorial into **3** parts:
 
 * Evaluating data basing on single attributes
 
@@ -53,7 +53,7 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 
 | Num | Name | Type | Description |
 |-----|------|------|-------------|
-| 1 | `IncidntNum` | categorical | Incident Number |
+| 1 | `IncidntNum` | categorical unordered | Incident Number |
 | 2 | `Category` | categorical unordered | Description of Crime  |
 | 3 | `DayOfWeek` | categorical unordered | Day of Week when the crime happened |
 | 4 | `Date` | Datetime | Date |
@@ -64,7 +64,7 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 | 9 | `X` | Geolocation | Latitude of the crime Location |
 | 10 | `Y` | Geolocation | Longitude of the Crime Location |
 | 11 | `Location` | Geolocation | Exact Location Name |
-| 12 | `PdId` | other | Pd Id|
+| 12 | `PdId` | categorical unordered | Pd Id|
 
 Let's tidy the data:
 * First, we ignore the last attribute pd Id because it is not so useful to take analysis
@@ -148,7 +148,7 @@ sort(table(tidy$Category))
 
 ```
 
-By looking at the table of categories, the top three crimes commited in San Franciso are LARCENY/THEFT, OTHER OFFENSES and NON-CRIMINAL. A good way to do visualize is to build up a pie chart, then we could see the proportion and differences among all categories. As you could see the largest proportion LARCENY/THEFT is more than a quarter.Therefore, we could suggest authorities should take action and prevention to crimes of larceny and theft more.
+By looking at the table of categories, We could find out that the top three crimes commited in San Franciso are LARCENY/THEFT, OTHER OFFENSES and NON-CRIMINAL. A good way to do visualize is to build up a pie chart, then we could see the proportions and differences among all categories. As you could see the largest proportion LARCENY/THEFT is more than a quarter.Therefore, we could suggest authorities should take action and prevention to crimes of larceny and theft more.
 
 ```{r eval6}
 
@@ -379,7 +379,7 @@ text(auto_fit, pretty=0)
 
 ### Conclusion 
 
-In our tutorial, we covered data preparation and tidying, visualizaiton of attributes, application of interactive maps, data prediction and regression analysis. Within our analysis, we are discovering the trend and distribution of attributes in the dataset to help you to formulate an general instinct of data analysis in way of data science. Moreover, we helped the authorites to conclude the overall situation of crimes at San Fransico in the year of 2016. We offered plenty of tips to the authorities basing on our analysis.
+In our tutorial, we covered data preparation and tidying, visualizaiton of attributes, application of interactive maps, data prediction and regression analysis. Within our analysis, we discovered the trend and distribution of attributes in the dataset to help you to formulate a general instinct of data analysis in way of data science. Moreover, we helped the authorites to conclude the overall situation of crimes at San Fransico in the year of 2016. We offered plenty of tips to the authorities basing on our analysis.
 
 
 
@@ -394,6 +394,11 @@ Our tutorial only coveres some applications of method and stuff in those librari
 * [ggplot for pie chart](https://www.r-graph-gallery.com/piechart-ggplot2.html)
 
 * [CUM stat](http://www.stat.cmu.edu/~cshalizi/350-2006/lecture-10.pdf)
+
+
+* [LeafLet markers](https://rstudio.github.io/leaflet/markers.html)
+
+* [RDocumentation of LeafLet library](https://www.rdocumentation.org/packages/leaflet/versions/1.1.0/topics/addControl)
 
 
 
