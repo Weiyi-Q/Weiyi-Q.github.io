@@ -165,7 +165,8 @@ In this part, we showed you a easy way of praparing, tidying and visualizing of 
 
 ### Exploratory Data Analysis
 
-A useful visualization is for geographic data is using the interactive map. Each incident has a location coordinates which let us able to see the distribution of crime incidents in San Francisco for our data.
+A useful visualization is for geographic data is using the interactive map. Each incident has a location coordinates which let us able to see the distribution of crime incidents in San Francisco for our data. 
+In this section, we want to have a better understanding of whether there's a certain area in San Francisco that has a higher criminal rate and if there's such area, is there any time in a day or any day in a week has higher criminal rate?
 
 First, we set the map view using the latitudes and longitudes of San Francisco: 
 
@@ -307,7 +308,8 @@ map
 
 ```
 
-If we zoom in the map, we can see that most of the incidents either happened at 6pm - 12am or 12am - 6am. Whereas we can hardly tell which day in a week have a higher crime rate, it seems uniformly distributed using an interactive map. Therefore, we can say that most of the incident happened in San Francisco is between 6pm to 6 am in a week. 
+Using the interactive map, we can see that overall in San Francisco has a pretty even criminal rate except for the southwest of San Francisco has a relatively lower crime rate. If we zoom in the map, we can see that most of the incidents either happened at 6pm - 12am or 12am - 6am. Whereas we can hardly tell which day in a week have a higher crime rate, it seems uniformly distributed using an interactive map. 
+Therefore, we can say that most of the incident happened in San Francisco is between 6pm to 6 am in a week. 
 
 ### Regression analysis
 
@@ -334,6 +336,7 @@ auto_fit_stats2 <- auto_fit2 %>%
 auto_fit_stats2 %>% knitr::kable()
 
 summary(auto_fit2)
+
 ```
 
 To check if this model is good to use, we plot a scatter plot for fitted value and residuals. 
