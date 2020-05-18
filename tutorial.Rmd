@@ -16,9 +16,9 @@ In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/
 
 * Evaluating data basing on single attributes
 
-* Comparison and analysis of two and more attributes
+* Attribute analysis with application of Interactive maps
 
-* Regression of crime dataset
+* Prediction and regression analysis
 
 By doing this tutorial, we could not only teach people how to take analysis of dataset in a way of data science, but also give suggestions on how authorities should do to reduce crimes by our anaylysis on the dataset.
 
@@ -375,5 +375,22 @@ text(auto_fit, pretty=0)
 ```
 
 ### Conclusion 
+
+In our tutorial, we covered data preparation and tidying, visualizaiton of attributes, application of interactive maps, data prediction and regression analysis. Within our analysis, we are discovering the trend and distribution of attributes in the dataset to help you to formulate an general instinct of data analysis in way of data science. Moreover, we helped the authorites to conclude the overall situation of crimes at San Fransico in the year of 2016. We offered plenty of tips to the authorities basing on our analysis.
+
+
+
+### Resources
+
+Our tutorial only coveres some applications of method and stuff in those libraries, we encourage you to take a look at these online resources for further learning and help:
+
+* [Hector's Lecture Notes (definitely)](https://www.hcbravo.org/IntroDataSci/bookdown-notes/)
+
+* [R for data science](https://r4ds.had.co.nz/dates-and-times.html)
+
+* [ggplot for pie chart](https://www.r-graph-gallery.com/piechart-ggplot2.html)
+
+*
+
 
 
