@@ -308,7 +308,43 @@ If we zoom in the map, we can see that most of the incidents either happened at 
 
 ### Regression analysis; 
 
-We want to find out if there is a relationship between hour and the number of incident for that time....
+Regression is a powerful and commonly used approach to modeling the relationship between a scalar response and a predictor.We use it extensively in exploratory data analysis and in statistical analyses since it fits into the statistical framework we saw in the last unit, and thus lets us do things like construct confidence intervals and hypothesis testing for relationships between variables. It also provides predictions for continuous outcomes of interest. For more detail of regression in r , click this [link](http://r-statistics.co/Linear-Regression.html)
+
+For this example, we want to check if the resolution is related to the time (hour and month) of incidents.
+
+Since we can only use numerical predictors in regression models. We want to create new dummy predictors to encode the value of the categorical predictor. We have use the new attribute reso to indicate if the resolution is "None" or "arrested" by using 0 and 1. 
+
+```{r reg3}
+tidy_new2 <- tidy %>%
+  mutate(reso = ifelse(Resolution == "NONE", 0, 1))
+    
+  
+tidy_new2 
+  
+```
+Since the outcome is binary, We used a Logistic regression this time to fit the model. 
+
+```{r reg3 cont}
+library(broom)
+auto_fit2 <- glm(reso~DayOfWeek+hour, tidy_new2， family = poisson())
+auto_fit_stats2 <- auto_fit2 %>%
+  tidy() 
+auto_fit_stats2 %>% knitr::kable()
+
+summary(auto_fit2)
+```
+To check if this model is good to use, we plot a scatter plot for fitted value and residuals. 
+```{r check2}
+auto_fit2 %>% 
+  augment() %>%
+  ggplot(aes(x=.fitted, y=.resid)) +
+    geom_point()
+
+
+```
+
+For this example We want to find out if there is a relationship between hour and the number of incident for that time. 
+First, we need to prepare our dataset, we use a new attribute hour_count as a indicator of how many incident occurs at that hour. 
 
 ```{r reg}
 
@@ -322,53 +358,14 @@ tidy_new <- left_join(tidy, tidy_new, by = "hour")
       
 
 ```
-we can build a regression  model for number of incident by the hour. 
+Then, we can build a regression  model for number of incident by the hour. 
 
 ```{r reg2}
 
-auto_fit <- lm(hour_count~hour, tidy_new)
-auto_fit_stats <- auto_fit %>%
-  tidy() 
-auto_fit_stats %>% knitr::kable()
-summary(auto_fit)
-```
-We can check the fitted value and residuals for this model to see if it is good
-```{r check}
-auto_fit %>% 
-  augment() %>%
-  ggplot(aes(x=.fitted, y=.resid)) +
-    geom_point() 
-
-
-```
-For this model, we want to check if the resolution if related to the hour and month of incidents.
-
-As before, we can only use numerical predictors in linear regression models. The most common way of doing this is to create new dummy predictors to encode the value of the categorical predictor. We have use the new attribute reso to indicate if the resolution is "None"
-
-```{r reg3}
-tidy_new2 <- tidy %>%
-  mutate(reso = ifelse(Resolution == "NONE", 0, 1))
-    
-  
-tidy_new2 
-  
-```
-We used a Logistic regression this time
-
-```{r reg3 cont}
-auto_fit2 <- glm(reso~DayOfWeek+hour, tidy_new2， family = poisson())
-auto_fit_stats2 <- auto_fit2 %>%
-  tidy() 
-auto_fit_stats2 %>% knitr::kable()
-summary(auto_fit2)
-```
-To check if this model is good to use
-```{r check2}
-auto_fit2 %>% 
-  augment() %>%
-  ggplot(aes(x=.fitted, y=.resid)) +
-    geom_point()
-
+library(tree)
+auto_fit <- tree(hour_count~hour, tidy_new)
+plot(auto_fit)
+text(auto_fit, pretty=0)
 
 ```
 
@@ -380,7 +377,9 @@ auto_fit2 %>%
 
 
 
-### and then the curation of a message or messages covering insights learned during the tutorial.
+
+
+### Conclusion 
 ```{r data prep3}
 
 ```
