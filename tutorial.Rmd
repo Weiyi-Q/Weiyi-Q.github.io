@@ -285,7 +285,6 @@ map <- map %>%
     lng = tidy2$X,
     lat = tidy2$Y,
     color = color2(tidy2), 
-    label = label, 
     clusterOptions = markerClusterOptions(),
     group = 'day'
   ) %>%
