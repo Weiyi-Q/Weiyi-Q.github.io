@@ -324,10 +324,10 @@ tidy_new <- left_join(tidy, tidy_new, by = "hour")
 we can build a regression  model for number of incident by the hour. 
 
 ```{r reg2}
-
+library(broom)
 auto_fit <- lm(hour_count~hour, tidy_new)
 auto_fit_stats <- auto_fit %>%
-  tidy() 
+  broom::tidy() 
 auto_fit_stats %>% knitr::kable()
 summary(auto_fit)
 ```
@@ -355,7 +355,8 @@ tidy_new2
 We used a Logistic regression this time
 
 ```{r reg3 cont}
-auto_fit2 <- glm(reso~DayOfWeek+hour, tidy_new2， family = poisson())
+library(tree)
+auto_fit2 <- tree(reso~DayOfWeek+hour, tidy_new2， family = poisson())
 auto_fit_stats2 <- auto_fit2 %>%
   tidy() 
 auto_fit_stats2 %>% knitr::kable()
@@ -379,7 +380,7 @@ auto_fit2 %>%
 
 
 
-### and then the curation of a message or messages covering insights learned during the tutorial.
+### Conclusion 
 ```{r data prep3}
 
 ```
