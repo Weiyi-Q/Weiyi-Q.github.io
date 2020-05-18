@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "Final Project"
 author: "Katherine Zen, Zhiyue Gao, Weiyi Qin"
@@ -390,4 +391,388 @@ text(auto_fit, pretty=0)
 ### Conclusion 
 ```{r data prep3}
 
+=======
+---
+title: "Analysis of criminal record in San Fransico"
+author: "Katherine Zen, Zhiyue Gao, Weiyi Qin"
+---
+
+# CMSC320 Final Project
+
+
+### Motivation
+
+Monitoring and tracking cirme records of cities seems fairly important, it not only implicitly states how crimes are committed but also gives the authorities a better way to analyze the features of crimes across cities and enforce more security to reduce the crimes efficiently. Therefore, we are giving this turorial of how to do the analysis of a San Fransico Crime Data Set in a way of data science that we learned in class of CMSC320.
+
+### Introduction
+
+In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#) on the Kaggle provided by Roshan Sharma to give a tutorial how to do the anaylsis. Generally we are splitting this tutorial into **3** parts:
+
+* Evaluating data basing on single attributes
+
+* Comparison and analysis of two and more attributes
+
+* Regression of crime dataset
+
+
+### Data Preparation
+
+First, we need to load some libraries needed for our project: 
+
+```{r libraries, message=FALSE}
+
+library(rvest)
+library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr) 
+library(leaflet)
+library(stringi)
+library(broom)
+
+```
+
+We get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/roshansharma/sanfranciso-crime-dataset/data#), then we get our dataset by read.csv
+
+```{r data prep}
+
+data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
+head(data,10)
+
+```
+
+There are 12 attributes, their data types and attributes' descriptions from the Kaggle websites.
+
+| Num | Name | Type | Description |
+|-----|------|------|-------------|
+| 1 | `IncidntNum` | categorical | Incident Number |
+| 2 | `Category` | categorical unordered | Description of Crime  |
+| 3 | `DayOfWeek` | categorical unordered | Day of Week when the crime happened |
+| 4 | `Date` | Datetime | Date |
+| 5 | `Time` | Datetime | Time|
+| 6 | `PdDistrict` | categorical unorded |  District |
+| 7 | `Resolution` | categorical unorded |  Kind of Punishment given to the criminal to resolve the case |
+| 8 | `Address` | Geolocation | Address where the crime scene happened |
+| 9 | `X` | Geolocation | Latitude of the crime Location |
+| 10 | `Y` | Geolocation | Longitude of the Crime Location |
+| 11 | `Location` | Geolocation | Exact Location Name |
+| 12 | `PdId` | other | Pd Id|
+
+Let's tidy the data:
+* First, we ignore the last attribute pd Id because it is not so useful to take analysis
+* Second We deal with the date here, as you could see, the time part in Date attribute is always 12:00:00 Am, so we would like to take it off and attach with the Time attribute and make Date attribute a datatype of datetime
+
+```{r tidy}
+
+tidy <- data %>%
+  mutate(Time = hm(Time))%>%
+  mutate(hour = hour(Time)) %>%
+  mutate(Date = mdy_hms(Date)) %>%
+  mutate(Month = format(Date, "%m")) %>%
+  select(-PdId)
+head(tidy)
+
+```
+
+### Evaluation on Single Attribute
+
+* First, let's look at the distribution of the number of crimes in year of 2016, the difference among all months are not pretty big
+
+```{r eval1}
+
+table(tidy$Month)
+
+```
+
+we use bar graph to give a visualization of the connection of how number of crimes differes from months. By the graph below, we could see much height difference among each bars, but Feburary and October look
+
+```{r eval2}
+
+tidy %>%
+  group_by(Month)%>%
+  summarize(num_incident = n()) %>%
+  ggplot(mapping = aes(x = Month, y = num_incident)) + geom_bar(stat = "identity")
+
+```
+
+* Second, let's look the crime distribution in time(by hours): 
+
+```{r eval3}
+table(tidy$hour)
+
+```
+
+we could also use a bar graph to see the crime distribution of all crimes in hours. As you could see from the plot and table above, in year of 2016, the least crimes commited in time period of 05:00 - 05:59 and the most crimes commited in time period of  18:00 - 18:59. Baseing on boxplot, we could see that the peroid of 1:00 - 11:59 AM is the period that crime commited under the average value. Therefore, Police officer can have more security check ands shifts around city  in time period of 12:00 - 00:59.
+
+```{r eval4, warning=FALSE}
+tidy %>%
+  group_by(hour) %>% 
+    summarize(num_incident = n()) %>% 
+  ggplot(mapping = (aes(x = hour, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
+
+```
+
+* Distribution of crimes in a week: let's look at how crimes are distributed within a week in a year of 2016. 
+
+```{r eval7}
+
+sort(table(tidy$DayOfWeek))
+
+```
+
+From the table, there is not much difference between the distribution in each day of week, and the top three days that crimes mostly commited are Friday, Saturday and Thrusday. We use bar graph to visualize the data.
+
+```{r eval8}
+
+tidy %>%
+  group_by(DayOfWeek) %>% 
+    summarize(num_incident = n()) %>% 
+  ggplot(mapping = (aes(x = DayOfWeek, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
+
+
+```
+
+
+```{r eval5}
+
+sort(table(tidy$Category))
+
+```
+
+By looking at the table of categories, the top three crimes commited in San Franciso are LARCENY/THEFT, OTHER OFFENSES and NON-CRIMINAL. A good way to do visualize is to build up a pie chart, then we could see the proportion and differences among all categories. As you could see the largest proportion LARCENY/THEFT is more than a quarter.
+
+```{r eval6}
+
+tidy %>%
+  group_by(Category) %>%
+  summarize(num_incident = n()) %>% 
+  ggplot(aes(x="", y=num_incident, fill=Category)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)
+
+```
+
+### Exploratory Data Analysis
+
+A useful visualization is for geographic data is using the interactive map. Each incident has a location coordinates which let us able to see the distribution of crime incidents in San Francisco for our data.
+
+First, we set the map view using the latitudes and longitudes of San Francisco: 
+
+```{r data1, message=FALSE}
+
+map <- leaflet(tidy) %>%
+  addTiles() %>%
+  setView(lat=37.7740, lng=-122.4313, zoom=11)
+map
+
+```
+
+The following table shows how we interpret our data set in the interactive map:
+
+| Color | Incident Time |
+|-----|------|
+| yellow | 6am - 12 am |
+| navy | 12pm - 6pm |
+| red | 6pm - 12am | 
+| black | 12am - 6am |
+
+| Color | Day of Week | 
+|-----|------|
+| red | Monday |
+| orange | Tuesday |
+| yellow | Wednesday |
+| green | Thursday |
+| blue | Friday |
+| navy | Saturday | 
+| purple | Sunday | 
+
+Then, we need to set the elements to display the data, popup information, different colors for different time or day of week, and the icons. 
+
+This one is for Incident Time: 
+
+```{r data2}
+
+color <- function(tidy){
+  sapply(tidy$hour, function(hour){
+    if (as.integer(hour) >= 6 & as.integer(hour) < 12){
+      "yellow"
+    } else if (as.integer(hour) >=12 & as.integer(hour) < 18){
+      "navy"
+    } else if (as.integer(hour) >= 18){
+      "red"
+    } else {
+      "black"
+    }
+  })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = color(tidy)
+)
+
+label <- paste("<b>Day of Week: </b>", tidy$DayOfWeek, "<br>",
+               "<b>Address: </b>", tidy$Address, "<br>",
+               "<b>Category: </b>", tidy$Category, "<br>",
+               "<b>Description: </b>", tidy$Descript, "<br>",
+               "<b>Resolution: </b>", tidy$Resolution, "<br>")
+
+```
+
+We use markers to represent each entity in the samples that have different incident times.
+
+```{r data3}
+
+map <- map %>%
+  addAwesomeMarkers(
+    data = tidy,
+    lng = tidy$X,
+    lat = tidy$Y,
+    icon = icons,
+    popup = label, 
+    clusterOptions = markerClusterOptions(),
+    group = 'time'
+  ) %>%
+  addLegend(position = "bottomright", colors = c("yellow", "navy", "red", "black"),
+            labels = c("6am - 12 am", "12pm - 6pm", "6pm - 12am", "12am - 6am"), 
+            title = "Different Incident Time", group = 'time')
+
+```
+
+This one is for Day of Week: 
+
+```{r data4}
+
+color2 <- function(tidy){
+  sapply(tidy$DayOfWeek, function(DayOfWeek){
+    if (stri_cmp(DayOfWeek, "Monday") == 0){
+      "red"
+    } else if (stri_cmp(DayOfWeek, "Tuesday") == 0){
+      "orange"
+    } else if (stri_cmp(DayOfWeek, "Wednesday") == 0){
+      "yellow"
+    } else if (stri_cmp(DayOfWeek, "Thursday") == 0){
+      "green"
+    } else if (stri_cmp(DayOfWeek, "Friday") == 0){
+      "blue"
+    } else if (stri_cmp(DayOfWeek, "Saturday") == 0){
+      "navy"
+    } else {
+      "purple"
+    }
+  })
+}
+
+```
+
+We use circles to represent each entity in the samples that have a different incident day of the week.
+
+```{r data5}
+
+map <- map %>%
+  addCircleMarkers(
+    data = tidy,
+    lng = tidy$X,
+    lat = tidy$Y,
+    color = color2(tidy), 
+    clusterOptions = markerClusterOptions(),
+    group = 'day'
+  ) %>%
+  addLegend(position = "bottomleft", colors = c("red", "orange", "yellow", "green", "blue", "navy", "purple"), 
+            labels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
+            title = "Different Day of Week", group = 'day')
+```
+
+Then we combine these two maps together:
+
+```{r data6}
+
+map <- map %>%
+  addLayersControl(overlayGroups = c('time', 'day'), options = layersControlOptions(collapsed = FALSE)) %>%
+  hideGroup("day")
+map
+
+```
+
+If we zoom in the map, we can see that most of the incidents either happened at 6pm - 12am or 12am - 6am. Whereas we can hardly tell which day in a week have a higher crime rate, it seems uniformly distributed using an interactive map. Therefore, we can say that most of the incident happened in San Francisco is between 6pm to 6 am in a week. 
+
+### Regression analysis
+
+Regression is a powerful and commonly used approach to modeling the relationship between a scalar response and a predictor.We use it extensively in exploratory data analysis and in statistical analyses since it fits into the statistical framework we saw in the last unit, and thus lets us do things like construct confidence intervals and hypothesis testing for relationships between variables. It also provides predictions for continuous outcomes of interest. For more detail of regression in r , click this [link](http://r-statistics.co/Linear-Regression.html)
+
+For this example, we want to check if the resolution is related to the time (hour and month) of incidents.
+
+Since we can only use numerical predictors in regression models. We want to create new dummy predictors to encode the value of the categorical predictor. We have use the new attribute reso to indicate if the resolution is "None" or "arrested" by using 0 and 1. 
+
+```{r reg3}
+
+tidy_new2 <- tidy %>%
+  mutate(reso = ifelse(Resolution == "NONE", 0, 1))
+tidy_new2 
+  
+```
+Since the outcome is binary, We used a Logistic regression this time to fit the model. 
+
+```{r reg3 cont}
+
+auto_fit2 <- glm(reso~DayOfWeek+hour, tidy_new2, family = poisson())
+auto_fit_stats2 <- auto_fit2 %>%
+  tidy() 
+auto_fit_stats2 %>% knitr::kable()
+
+summary(auto_fit2)
+```
+
+To check if this model is good to use, we plot a scatter plot for fitted value and residuals. 
+
+```{r check2}
+
+auto_fit2 %>% 
+  augment() %>%
+  ggplot(aes(x=.fitted, y=.resid)) +
+    geom_point()
+
+```
+
+For this example We want to find out if there is a relationship between hour and the number of incident for that time. 
+First, we need to prepare our dataset, we use a new attribute hour_count as a indicator of how many incident occurs at that hour. 
+
+```{r reg}
+
+tidy_new <- tidy%>%
+  group_by(hour) %>% 
+    summarize(hour_count = n()) 
+    
+tidy_new <- left_join(tidy, tidy_new, by = "hour")
+  tidy_new
+    
+```
+
+Then, we can build a regression  model for number of incident by the hour. 
+
+```{r reg2}
+
+library(tree)
+auto_fit <- tree(hour_count~hour, tidy_new)
+plot(auto_fit)
+text(auto_fit, pretty=0)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+### Conclusion 
+```{r data prep3}
+
+>>>>>>> 94455303985c0909dd1be22775863f00a92c6dd7
 ```
