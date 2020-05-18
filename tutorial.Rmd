@@ -164,10 +164,12 @@ First, we set the map view using the latitudes and longitudes of San Francisco:
 
 map <- leaflet(tidy) %>%
   addTiles() %>%
-  setView(lat=37.773972, lng=-122.431297, zoom=11)
+  setView(lat=37.7740, lng=-122.4313, zoom=11)
 map
 
 ```
+
+The following table shows how we interpret our data set in the interactive map:
 
 | Color | Incident Time |
 |-----|------|
@@ -176,17 +178,20 @@ map
 | red | 6pm - 12am | 
 | black | 12am - 6am |
 
-```{r data2, include=TRUE, eval=TRUE}
+Since the original dataset is too big, we randomly selected 1000 samples from the original dataset. We use those samples to draw our interactive map. 
+```{r data2.2}
+tidy2 <- sample_n(tidy2, 1000)
+```
 
-tidy2 <- head(tidy, 1000)
+```{r data2}
 
 color <- function(tidy2){
   sapply(tidy2$hour, function(hour){
-    if (hour >= 6 & hour < 12){
+    if (as.integer(hour) >= 6 & as.integer(hour) < 12){
       "yellow"
-    } else if (hour >=12 & hour < 18){
+    } else if (as.integer(hour) >=12 & as.integer(hour) < 18){
       "navy"
-    } else if (hour >=18){
+    } else if (as.integer(hour) >= 18){
       "red"
     } else {
       "black"
@@ -205,13 +210,13 @@ icons <- awesomeIcons(
 
 ```{r data3}
 
-leaflet(tidy2) %>%
+time_map <- leaflet(tidy2) %>%
   addTiles() %>%
-  setView(lat=37.773972, lng=-122.431297, zoom=11) %>%
+  setView(lat=37.7740, lng=-122.4313, zoom=11) %>%
   addAwesomeMarkers(
     data = tidy2,
-    lat = tidy2$X,
-    lng = tidy2$Y,
+    lng = tidy2$X,
+    lat = tidy2$Y,
     icon = icons
   )
 
