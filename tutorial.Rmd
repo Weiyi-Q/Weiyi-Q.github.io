@@ -381,6 +381,8 @@ text(auto_fit, pretty=0)
 
 In our tutorial, we covered data preparation and tidying, visualizaiton of attributes, application of interactive maps, data prediction and regression analysis. Within our analysis, we discovered the trend and distribution of attributes in the dataset to help you to formulate a general instinct of data analysis in way of data science. Moreover, we helped the authorites to conclude the overall situation of crimes at San Fransico in the year of 2016. We offered plenty of tips to the authorities basing on our analysis.
 
+
+
 ### Resources
 
 Our tutorial only coveres some applications of method and stuff in those libraries, we encourage you to take a look at these online resources for further learning and help:
@@ -392,6 +394,7 @@ Our tutorial only coveres some applications of method and stuff in those librari
 * [ggplot for pie chart](https://www.r-graph-gallery.com/piechart-ggplot2.html)
 
 * [CUM stat](http://www.stat.cmu.edu/~cshalizi/350-2006/lecture-10.pdf)
+
 
 * [LeafLet markers](https://rstudio.github.io/leaflet/markers.html)
 
