@@ -323,10 +323,10 @@ Since we can only use numerical predictors in regression models. We want to crea
 
 tidy_new2 <- tidy %>%
   mutate(reso = ifelse(Resolution == "NONE", 0, 1))
-tidy_new2 
+head(tidy_new2,10) 
   
 ```
-Since the outcome is binary, We used a Logistic regression this time to fit the model. 
+Since the outcome is binary, We used a Logistic regression this time to fit the model. And we use the broom::tidy function to show the resulting model.
 
 ```{r reg3 cont}
 
@@ -340,6 +340,7 @@ summary(auto_fit2)
 ```
 
 To check if this model is good to use, we plot a scatter plot for fitted value and residuals. 
+From the plot, we obesrve a non-random pattern which supports a nonlinear model, this may suggest we should linear model here is not the best model.
 
 ```{r check2}
 
@@ -350,7 +351,7 @@ auto_fit2 %>%
 
 ```
 
-For this example We want to find out if there is a relationship between hour and the number of incident for that time. 
+For this example, We want to find out if there is a relationship between hour and the number of incident for that time. 
 First, we need to prepare our dataset, we use a new attribute hour_count as a indicator of how many incident occurs at that hour. 
 
 ```{r reg}
@@ -360,11 +361,13 @@ tidy_new <- tidy%>%
     summarize(hour_count = n()) 
     
 tidy_new <- left_join(tidy, tidy_new, by = "hour")
-  tidy_new
+  head(tidy_new,10)
     
 ```
 
-Then, we can build a regression  model for number of incident by the hour. 
+Then, we can build a [regression tree](http://www.stat.cmu.edu/~cshalizi/350-2006/lecture-10.pdf) model for number of incident by the hour. Regression tree is not linear regression model. Prediction trees use the tree to represent the recursive partition. Each of the **terminal nodes**, or **leaves**, of the tree represents a cell of the partition, and has
+attached to it a simple model which applies in that cell only. A point x belongs to a leaf if x falls in the corresponding cell of the partition. To figure out which cell we are in, we start at the **root node** of the tree, and ask a sequence of
+questions about the features. 
 
 ```{r reg2}
 
@@ -390,7 +393,7 @@ Our tutorial only coveres some applications of method and stuff in those librari
 
 * [ggplot for pie chart](https://www.r-graph-gallery.com/piechart-ggplot2.html)
 
-*
+* [CUM stat](http://www.stat.cmu.edu/~cshalizi/350-2006/lecture-10.pdf)
 
 
 
