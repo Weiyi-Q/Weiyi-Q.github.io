@@ -30,6 +30,7 @@ Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/r
 
 library(rvest)
 library(tidyverse)
+library(broom)
 library(tidyr)
 library(lubridate)
 library(dplyr) 
@@ -45,7 +46,7 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 
 | Num | Name | Type | Description |
 |-----|------|------|-------------|
-| 1 | `IncidntNum` | categorical | Incident Number |
+| 1 | `IncidntNum` | categorical unordered | Incident Number(ID) |
 | 2 | `Category` | categorical unordered | Description of Crime  |
 | 3 | `DayOfWeek` | categorical unordered | Day of Week when the crime happened |
 | 4 | `Date` | Datetime | Date |
@@ -56,7 +57,7 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 | 9 | `X` | Geolocation | Latitude of the crime Location |
 | 10 | `Y` | Geolocation | Longitude of the Crime Location |
 | 11 | `Location` | Geolocation | Exact Location Name |
-| 12 | `PdId` | other | Pd Id|
+| 12 | `PdId` | categorical unordered | Pd Id|
 
 Let's tidy the data:
 * First, we ignore the last attribute pd Id because it is not so useful to take analysis
