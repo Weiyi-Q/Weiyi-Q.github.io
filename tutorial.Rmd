@@ -108,7 +108,7 @@ we could also use a bar graph to see the crime distribution of all crimes in hou
 tidy %>%
   group_by(hour) %>% 
     summarize(num_incident = n()) %>% 
-  ggplot(mapping = (aes(x = factor(hour), y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
+  ggplot(mapping = (aes(x = hour, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
 
 ```
 
@@ -284,7 +284,6 @@ map <- map %>%
     lng = tidy2$X,
     lat = tidy2$Y,
     color = color2(tidy2), 
-    label = label, 
     clusterOptions = markerClusterOptions(),
     group = 'day'
   ) %>%
@@ -354,4 +353,5 @@ auto_fit %>%
 ```{r data prep3}
 
 
+>>>>>>> 8dee97cefc961efcc9b4a3dc0ada1789e370eaf6
 ```
