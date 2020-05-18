@@ -178,8 +178,10 @@ map
 
 ```{r data2, include=TRUE, eval=TRUE}
 
-color <- function(tidy){
-  sapply(tidy$hour, function(hour){
+tidy2 <- head(tidy, 1000)
+
+color <- function(tidy2){
+  sapply(tidy2$hour, function(hour){
     if (hour >= 6 & hour < 12){
       "yellow"
     } else if (hour >=12 & hour < 18){
@@ -192,20 +194,28 @@ color <- function(tidy){
   })
 }
 
-leaflet(tidy) %>%
-  addTiles() %>%
-  setView(lat=37.773972, lng=-122.431297, zoom=11) %>%
-  addCircleMarkers(
-    data = tidy,
-    lat = tidy$X,
-    lng = tidy$Y,
-    color = ~color,
-    stroke = FALSE, 
-    fillOpacity = 0.5
-  )
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = color(tidy2)
+)
 
 ```
 
+```{r data3}
+
+leaflet(tidy2) %>%
+  addTiles() %>%
+  setView(lat=37.773972, lng=-122.431297, zoom=11) %>%
+  addAwesomeMarkers(
+    data = tidy2,
+    lat = tidy2$X,
+    lng = tidy2$Y,
+    icon = icons
+  )
+
+```
 
 
 ### hypothesis testing and machine learning to provide analysis; 
