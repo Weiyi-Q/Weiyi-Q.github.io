@@ -20,7 +20,7 @@ In this project, we basing on the [dataset](https://www.kaggle.com/roshansharma/
 
 * Regression of crime dataset
 
-
+By doing this tutorial, we could not only teach people how to take analysis of dataset in a way of data science, but also give suggestions on how authorities should do to reduce crimes by our anaylysis on the dataset.
 
 ### Data Preparation: 
 
@@ -30,7 +30,6 @@ Firstly, we get data from Roshan Sharma's [Kaggle page](https://www.kaggle.com/r
 
 library(rvest)
 library(tidyverse)
-library(broom)
 library(tidyr)
 library(lubridate)
 library(dplyr) 
@@ -60,8 +59,12 @@ There are 12 attributes, their data types and attributes' descriptions from the 
 | 12 | `PdId` | categorical unordered | Pd Id|
 
 Let's tidy the data:
+
 * First, we ignore the last attribute pd Id because it is not so useful to take analysis
-* Second We deal with the date here, as you could see, the time part in Date attribute is always 12:00:00 Am, so we would like to take it off and attach with the Time attribute and make Date attribute a datatype of datetime
+
+* Second We deal with the date here, as you could see, the time part in Date attribute is always 12:00:00 Am, so we would like to take it off make Date and Time attribute a datatype of datetime
+
+* For better comparsion, we pull the numeric value of Month and hour in Date and Time attributes
 
 ```{r tidy}
 tidy <- data %>%
@@ -77,7 +80,7 @@ head(tidy)
 
 #### evaluation on single attributes
 
-* First, let's look at the distribution of the number of crimes in year of 2016, the difference among all months are not pretty big
+* First, let's look at the distribution of the number of crimes in year of 2016, the differences of number of crimes among all months are not pretty huge.
 
 ```{r eval1}
 
@@ -85,7 +88,7 @@ table(tidy$Month)
 
 ```
 
-we use bar graph to give a visualization of the connection of how number of crimes differes from months. By the graph below, we could see much height difference among each bars, but Feburary and October look
+we use bar graph to give a visualization of the connection of how number of crimes differes from months. By the graph below, we could see not much height differences among each bars, but the bars of January and October are relatively taller than others which implies that the numbe of cirmes in January and October are relatively higher than those in other months. Therefore, We could suggest that authorities should enforce more security and shifts especially in January and October
 
 ```{r eval2}
 
@@ -96,7 +99,9 @@ tidy %>%
 
 ```
 
+
 * Second, let's look the crime distribution in time(by hours): 
+
 
 ```{r eval3}
 table(tidy$hour)
@@ -122,7 +127,8 @@ sort(table(tidy$DayOfWeek))
 
 ```
 
-From the table, there is not much difference between the distribution in each day of week, and the top three days that crimes mostly commited are Friday, Saturday and Thrusday. We use bar graph to visualize the data.
+From the table, there is not much difference between the distribution in each day of week, and the top three days that crimes mostly commited are Friday, Saturday and Thrusday. We use bar graph to visualize the data. From the data, We could suggest that authorities should enforce more security and shifts around weekend (starting on Friday)
+
 
 ```{r eval8}
 
@@ -142,7 +148,7 @@ sort(table(tidy$Category))
 
 ```
 
-By looking at the table of categories, the top three crimes commited in San Franciso are LARCENY/THEFT, OTHER OFFENSES and NON-CRIMINAL. A good way to do visualize is to build up a pie chart, then we could see the proportion and differences among all categories. As you could see the largest proportion LARCENY/THEFT is more than a quarter.
+By looking at the table of categories, the top three crimes commited in San Franciso are LARCENY/THEFT, OTHER OFFENSES and NON-CRIMINAL. A good way to do visualize is to build up a pie chart, then we could see the proportion and differences among all categories. As you could see the largest proportion LARCENY/THEFT is more than a quarter.Therefore, we could suggest authorities should take action and prevention to crimes of larceny and theft more.
 
 ```{r eval6}
 
@@ -154,6 +160,8 @@ tidy %>%
   coord_polar("y", start=0)
 
 ```
+
+In this part, we showed you a easy way of praparing, tidying and visualizing of the data step by step. You will understand the diffence and distribution of attributes in the dataset easily by doing this.
 
 ## Exploratory Data Analysis
 
