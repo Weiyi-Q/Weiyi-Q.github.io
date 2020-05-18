@@ -323,7 +323,7 @@ Since we can only use numerical predictors in regression models. We want to crea
 
 tidy_new2 <- tidy %>%
   mutate(reso = ifelse(Resolution == "NONE", 0, 1))
-tidy_new2 
+head(tidy_new2,10) 
   
 ```
 Since the outcome is binary, We used a Logistic regression this time to fit the model. And we use the broom::tidy function to show the resulting model.
@@ -361,7 +361,7 @@ tidy_new <- tidy%>%
     summarize(hour_count = n()) 
     
 tidy_new <- left_join(tidy, tidy_new, by = "hour")
-  tidy_new
+  head(tidy_new,10)
     
 ```
 
