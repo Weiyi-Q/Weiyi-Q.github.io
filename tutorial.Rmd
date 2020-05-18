@@ -229,19 +229,24 @@ label <- paste("<b>Day of Week: </b>", tidy2$DayOfWeek, "<br>",
 
 ```
 
+We use markers to represent each entity in the samples that have different incident times.
+
 ```{r data3}
 
-time_map <- leaflet(tidy2) %>%
-  addTiles() %>%
-  setView(lat=37.7740, lng=-122.4313, zoom=11) %>%
+map <- map %>%
   addAwesomeMarkers(
     data = tidy2,
     lng = tidy2$X,
     lat = tidy2$Y,
     icon = icons,
     popup = label, 
-    clusterOptions = markerClusterOptions()
-  )
+    clusterOptions = markerClusterOptions(),
+    group = 'time'
+  ) %>%
+  addLegend(position = "bottomright", colors = c("yellow", "navy", "red", "black"),
+            labels = c("6am - 12 am", "12pm - 6pm", "6pm - 12am", "12am - 6am"), 
+            title = "Different Incident Time", group = 'time')
+
 ```
 
 This one is for Day of Week: 
@@ -270,21 +275,38 @@ color2 <- function(tidy2){
 
 ```
 
+We use circles to represent each entity in the samples that have a different incident day of the week.
+
 ```{r data5}
 
-day_map <- leaflet(tidy2) %>%
-  addTiles() %>%
-  setView(lat=37.7740, lng=-122.4313, zoom=11) %>%
+map <- map %>%
   addCircleMarkers(
     data = tidy2,
     lng = tidy2$X,
     lat = tidy2$Y,
     color = color2(tidy2), 
     label = label, 
-    clusterOptions = markerClusterOptions()
-  )
-day_map
+    clusterOptions = markerClusterOptions(),
+    group = 'day'
+  ) %>%
+  addLegend(position = "bottomleft", colors = c("red", "orange", "yellow", "green", "blue", "navy", "purple"), 
+            labels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"),
+            title = "Different Day of Week", group = 'day')
 ```
+
+Then we combine these two maps together:
+
+```{r data6}
+
+map <- map %>%
+  addLayersControl(overlayGroups = c('time', 'day'), options = layersControlOptions(collapsed = FALSE)) %>%
+  hideGroup("day")
+map
+
+```
+
+If we zoom in the map, we can see that most of the incidents either happened at 6pm - 12am or 12am - 6am. Whereas we can hardly tell which day in a week have a higher crime rate, it seems uniformly distributed using an interactive map. Therefore, we can say that most of the incident happened in San Francisco is between 6pm to 6 am in a week. 
+
 ### hypothesis testing and machine learning to provide analysis; 
 
 
