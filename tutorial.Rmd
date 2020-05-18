@@ -35,6 +35,7 @@ library(tidyr)
 library(lubridate)
 library(dplyr) 
 library(leaflet)
+library(stringi)
 
 data <- read.csv("Police_Department_Incidents_-_Previous_Year__2016_.csv")
 head(data,10)
@@ -178,10 +179,24 @@ The following table shows how we interpret our data set in the interactive map:
 | red | 6pm - 12am | 
 | black | 12am - 6am |
 
+| Color | Day of Week | 
+|-----|------|
+| red | Monday |
+| orange | Tuesday |
+| yellow | Wednesday |
+| green | Thursday |
+| blue | Friday |
+| navy | Saturday | 
+| purple | Sunday | 
+
 Since the original dataset is too big, we randomly selected 1000 samples from the original dataset. We use those samples to draw our interactive map. 
 ```{r data2.2}
-tidy2 <- sample_n(tidy2, 1000)
+tidy2 <- sample_n(tidy, 1000)
 ```
+
+Set the elements to display the data, popup information, different colors for different time or day of week, and the icons. 
+
+This one is for Incident Time: 
 
 ```{r data2}
 
@@ -206,6 +221,12 @@ icons <- awesomeIcons(
   markerColor = color(tidy2)
 )
 
+label <- paste("<b>Day of Week: </b>", tidy2$DayOfWeek, "<br>",
+               "<b>Address: </b>", tidy2$Address, "<br>",
+               "<b>Category: </b>", tidy2$Category, "<br>",
+               "<b>Description: </b>", tidy2$Descript, "<br>",
+               "<b>Resolution: </b>", tidy2$Resolution, "<br>")
+
 ```
 
 ```{r data3}
@@ -217,12 +238,53 @@ time_map <- leaflet(tidy2) %>%
     data = tidy2,
     lng = tidy2$X,
     lat = tidy2$Y,
-    icon = icons
+    icon = icons,
+    popup = label, 
+    clusterOptions = markerClusterOptions()
   )
+```
+
+This one is for Day of Week: 
+
+```{r data4}
+
+color2 <- function(tidy2){
+  sapply(tidy2$DayOfWeek, function(DayOfWeek){
+    if (stri_cmp(DayOfWeek, "Monday") == 0){
+      "red"
+    } else if (stri_cmp(DayOfWeek, "Tuesday") == 0){
+      "orange"
+    } else if (stri_cmp(DayOfWeek, "Wednesday") == 0){
+      "yellow"
+    } else if (stri_cmp(DayOfWeek, "Thursday") == 0){
+      "green"
+    } else if (stri_cmp(DayOfWeek, "Friday") == 0){
+      "blue"
+    } else if (stri_cmp(DayOfWeek, "Saturday") == 0){
+      "navy"
+    } else {
+      "purple"
+    }
+  })
+}
 
 ```
 
+```{r data5}
 
+day_map <- leaflet(tidy2) %>%
+  addTiles() %>%
+  setView(lat=37.7740, lng=-122.4313, zoom=11) %>%
+  addCircleMarkers(
+    data = tidy2,
+    lng = tidy2$X,
+    lat = tidy2$Y,
+    color = color2(tidy2), 
+    label = label, 
+    clusterOptions = markerClusterOptions()
+  )
+day_map
+```
 ### hypothesis testing and machine learning to provide analysis; 
 
 
