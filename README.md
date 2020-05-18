@@ -14,8 +14,8 @@ Install **R**: `sudo apt -y install r-base`
 Install **RStudio**: `sudo dpkg -i rstudio-1.2.5033-amd64.deb` and then `sudo apt -f install`
 
 ### Contribution
-Katherine Zen:  exploratory data analysis
-Zhiyue Gao: evaluation on single attributes
+Katherine Zen:  exploratory data analysis \
+Zhiyue Gao: evaluation on single attributes\
 [Weiyi Qin](https://github.com/Weiyi-Q): regression analysis
 
 
