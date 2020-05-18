@@ -18,6 +18,9 @@ Katherine Zen:  exploratory data analysis \
 Zhiyue Gao: evaluation on single attributes\
 [Weiyi Qin](https://github.com/Weiyi-Q): regression analysis
 
+### Tutorial Instruction:
+
+leaflet interactive map included inside the tutorial.html, it would take time for website and map to load the data, please keep wait if the website doesn't respond.
 
 ### License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Weiyi-Q/cmsc320FinalProj/blob/master/LICENSE) file for details.
