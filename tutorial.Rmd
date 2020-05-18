@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "Final Project"
 author: "Katherine Zen, Zhiyue Gao, Weiyi Qin"
@@ -69,7 +70,7 @@ tidy <- data %>%
   mutate(Month = format(Date, "%m")) %>%
   select(-PdId)
 
-head(tidy, 10)
+head(tidy)
 
 ```
 
@@ -107,8 +108,7 @@ we could also use a bar graph to see the crime distribution of all crimes in hou
 tidy %>%
   group_by(hour) %>% 
     summarize(num_incident = n()) %>% 
-  ggplot(mapping = (aes(x= factor(hour), y = num_incident))) + 
-  geom_bar(stat = "identity")
+  ggplot(mapping = (aes(x = hour, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
 
 ```
 
@@ -128,9 +128,7 @@ From the table, there is not much difference between the distribution in each da
 tidy %>%
   group_by(DayOfWeek) %>% 
     summarize(num_incident = n()) %>% 
-  ggplot(mapping = (aes(x = DayOfWeek, y = num_incident))) + 
-  geom_boxplot() + 
-  geom_bar(stat = "identity")
+  ggplot(mapping = (aes(x = DayOfWeek, y = num_incident))) + geom_boxplot() + geom_bar(stat = "identity")
 
 
 ```
@@ -158,17 +156,60 @@ tidy %>%
 
 ## Exploratory Data Analysis
 
-```{r data_analysis, include=TRUE, eval=TRUE}
-map <- leaflet(data) %>%
+A useful visualization is for geographic data is using the interactive map. Each incident has a location coordinates which let us able to see the distribution of crime incidents in San Francisco for our data.
+
+First, we set the map view using the latitudes and longitudes of San Francisco: 
+
+```{r data1, message=FALSE}
+
+map <- leaflet(tidy) %>%
   addTiles() %>%
   setView(lat=37.773972, lng=-122.431297, zoom=11)
 map
 
 ```
 
+| Color | Incident Time |
+|-----|------|
+| yellow | 6am - 12 am |
+| navy | 12pm - 6pm |
+| red | 6pm - 12am | 
+| black | 12am - 6am |
+
+```{r data2, include=TRUE, eval=TRUE}
+
+color <- function(tidy){
+  sapply(tidy$hour, function(hour){
+    if (hour >= 6 & hour < 12){
+      "yellow"
+    } else if (hour >=12 & hour < 18){
+      "navy"
+    } else if (hour >=18){
+      "red"
+    } else {
+      "black"
+    }
+  })
+}
+
+leaflet(tidy) %>%
+  addTiles() %>%
+  setView(lat=37.773972, lng=-122.431297, zoom=11) %>%
+  addCircleMarkers(
+    data = tidy,
+    lat = tidy$X,
+    lng = tidy$Y,
+    color = ~color,
+    stroke = FALSE, 
+    fillOpacity = 0.5
+  )
+
+```
+
 
 
 ### hypothesis testing and machine learning to provide analysis; 
+
 
 ```{r reg}
 tidy_new <- tidy %>% 
@@ -204,6 +245,9 @@ auto_fit %>%
 
 
 ```
+
+
+
 
 
 
