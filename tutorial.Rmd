@@ -309,15 +309,13 @@ If we zoom in the map, we can see that most of the incidents either happened at 
 
 
 ```{r reg}
-tidy_new <- tidy %>% 
-  mutate(reso = ifelse(Resolution == "NONE", 0, 1))
 
-tidy_new %>%
-  group_by(DayOfWeek) %>% 
-    summarize(week_num = n()) 
+tidy_new <- tidy%>%
+  group_by(hour) %>% 
+    summarize(hour_count = n()) 
     
   
-tidy_new <- inner_join(tidy_new, tidy, by = "DayOfWeek")
+tidy_new <- left_join(tidy, tidy_new, by = "hour")
   
   
       
