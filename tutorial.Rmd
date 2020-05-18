@@ -203,6 +203,7 @@ icons <- awesomeIcons(
 
 ```
 
+
 ```{r data3}
 
 leaflet(tidy2) %>%
@@ -212,7 +213,7 @@ leaflet(tidy2) %>%
     data = tidy2,
     lat = tidy2$X,
     lng = tidy2$Y,
-    icon = icons
+    icon = icons,
   )
 
 ```
