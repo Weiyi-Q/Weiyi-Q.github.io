@@ -190,7 +190,7 @@ The following table shows how we interpret our data set in the interactive map:
 
 Since the original dataset is too big, we randomly selected 1000 samples from the original dataset. We use those samples to draw our interactive map. 
 ```{r data2.2}
-tidy2 <- sample_n(tidy, 1000)
+tidy2 <- tidy
 ```
 
 Set the elements to display the data, popup information, different colors for different time or day of week, and the icons. 
@@ -316,8 +316,7 @@ tidy_new <- tidy%>%
     
   
 tidy_new <- left_join(tidy, tidy_new, by = "hour")
-  
-  
+  tidy_new
       
 
 ```
@@ -325,15 +324,43 @@ tidy_new <- left_join(tidy, tidy_new, by = "hour")
 
 ```{r reg2}
 
-auto_fit <- lm(reso~hour, tidy_new)
+auto_fit <- lm(hour_count~hour, tidy_new)
 auto_fit_stats <- auto_fit %>%
   tidy() 
 auto_fit_stats %>% knitr::kable()
+summary(auto_fit)
+```
+```{r check}
+auto_fit %>% 
+  augment() %>%
+  ggplot(aes(x=.fitted, y=.resid)) +
+    geom_point()
+
 
 ```
 
-```{r check}
-auto_fit %>% 
+
+```{r reg3}
+tidy_new2 <- tidy %>%
+  group_by(DayOfWeek) %>% 
+    summarize(week_count = n()) 
+    
+  
+tidy_new2 <- left_join(tidy, tidy_new2, by = "DayOfWeek")
+  tidy_new2
+  
+```
+
+
+```{r reg3 cont}
+auto_fit2 <- lm(week_count~DayOfWeek, tidy_new2)
+auto_fit_stats2 <- auto_fit2 %>%
+  tidy() 
+auto_fit_stats2 %>% knitr::kable()
+summary(auto_fit2)
+```
+```{r check2}
+auto_fit2 %>% 
   augment() %>%
   ggplot(aes(x=.fitted, y=.resid)) +
     geom_point()
@@ -347,9 +374,9 @@ auto_fit %>%
 
 
 
+
+
 ### and then the curation of a message or messages covering insights learned during the tutorial.
 ```{r data prep3}
 
-
->>>>>>> 8dee97cefc961efcc9b4a3dc0ada1789e370eaf6
 ```
