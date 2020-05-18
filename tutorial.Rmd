@@ -5,7 +5,6 @@ author: "Katherine Zen, Zhiyue Gao, Weiyi Qin"
 
 # CMSC320 Final Project
 
-
 ### Motivation
 
 Monitoring and tracking cirme records of cities seem fairly important, it not only implicitly states how crimes are committed but also gives the authorities a better way to analyze the features of crimes across cities and enforce more securities to reduce crimes efficiently. Therefore, we are giving this tutorial of how to do the analysis of a San Fransico Crime DataSet in a way of data science that we learned in class of CMSC320.
